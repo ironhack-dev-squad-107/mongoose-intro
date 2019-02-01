@@ -10,14 +10,18 @@ const Schema = mongoose.Schema;
 // use the Schema class to create our dog schema object
 // (the schema is the STRUCTURE of documents in the model's collection)
 const dogSchema = new Schema({
-  dogName: String,
-  age: Number,
-  color: String,
+  dogName: { type: String, required: true },
+  age: { type: Number, min: 0, max: 50 },
+  color: { type: String, minlength: 3, maxlength: 20 },
   vetVisits: [Date], // use [] for an array
-  toys: [String],
-  owners: [String], // String for now
-  country: String,
-  photoUrl: String
+  toys: [{ type: String, minlength: 2 }],
+  // ObjectId IS NOT a built-in JavaScript class like String, Number, etc.
+  // Mongoose gives us the class through Schema.Types
+  owners: [Schema.Types.ObjectId],
+  // regular expression matches a string of EXACTLY 2 UPPERCASE letters
+  country: { type: String, match: /^[A-Z][A-Z]$/ },
+  // regular expression matches a string that starts with "http://" or "https://"
+  photoUrl: { type: String, match: /^https?:\/\// }
 });
 
 // the variable "Dog" is our Mongoose model class
@@ -122,6 +126,17 @@ Dog.updateMany({ dogName: { $eq: "Mojo" } }, { $inc: { age: 1 } })
   })
   .catch(err => {
     console.log("Dog.updateMany() FAILURE! 😨", err);
+  });
+
+// $push is like the push() array method in JavaScript (toys.push("Rope Toy"))
+Dog.findByIdAndUpdate("5c5310238118fd8446555924", {
+  $push: { toys: "Rope Toy" }
+})
+  .then(doggyDoc => {
+    console.log(`Dog $push WORKED ${doggyDoc._id}`);
+  })
+  .catch(err => {
+    console.log("Dog $push FAILURE!! 🐈", err);
   });
 
 // (D)eleting DOGS from our database with Mongoose
