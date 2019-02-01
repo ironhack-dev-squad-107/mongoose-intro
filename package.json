@@ -10,6 +10,8 @@
   "author": "Nizar Khalife Iglesias <khalifenizar@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
+    "hbs": "^4.0.1",
     "mongoose": "^5.4.8"
   }
 }

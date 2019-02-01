@@ -1,0 +1,20 @@
+<p>Dog-friendly online store.</p>
+
+<h2>Here are some satisfied customers:</h2>
+
+<ul>
+  {{#each dogArray}}
+  <li>
+    <h3>{{this.dogName}} 🐶</h3>
+    <p>{{this.age}} years old</p>
+
+    {{#if this.toys.length}}
+    <h4>Favorite Toys</h4>
+    {{#each this.toys}}
+    <!-- "this" is one of the strings inside the toys array -->
+    {{this}}
+    {{/each}}
+    {{/if}}
+  </li>
+  {{/each}}
+</ul>
